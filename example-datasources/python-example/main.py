@@ -7,17 +7,12 @@ from data_sender import DataSender, DataPacket
 def main():
     sender = DataSender()
 
-    packet1 = DataPacket("data1", "append", 3)
-    packet2 = DataPacket("data1", "append", 5)
-    packet3 = DataPacket("data1", "clear")
-
-    sender.sendData(packet1)
-    time.sleep(5)
-    sender.sendData(packet2)
-    time.sleep(5)
-    sender.sendData(packet3)
-    time.sleep(5)
-    sender.sendData(packet2)
+    sender.sendData(DataPacket("data1", "clear"))
+    packets = [DataPacket("data1", "append", { "x": i, "y": i ** 2 }) for i in range(10)]
+        
+    for packet in packets:
+        sender.sendData(packet)
+        time.sleep(5)
 
 if __name__ == "__main__":
     main()
