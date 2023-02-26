@@ -1,6 +1,45 @@
 import React, { Component } from "react";
 import { VictoryLine, VictoryChart, VictoryAxis } from "victory";
 
+class ChartOptionsDropdown extends Component {
+    constructor(props) {
+        super();
+        this.state = {
+            open: false  
+        };
+    }
+
+    handleOpen() {
+        this.setState({ open: !this.state.open }); 
+    }
+
+    render() {
+        return (
+            <div>
+                <button onClick={() => this.handleOpen()}>Available Charts</button>
+                {
+                    this.state.open
+                    ?
+                    (
+                        <ul>
+                            { 
+                                this.props.availableCharts.map((chart, i) => (
+                                    <li key={i}>
+                                        <input type="checkbox" name={chart} id={chart} />
+                                        <label htmlFor={chart}>{chart}</label>
+                                    </li>
+                                )) 
+                            }
+                        </ul>
+                    )
+                    : null
+                }
+                
+            </div>
+        );
+    }
+}
+
 export default class App extends Component {
     constructor(props) {
         super();
@@ -32,12 +71,19 @@ export default class App extends Component {
     }
 
     render() {
+        const availableCharts = Object.keys(this.state.data);
+
         return (
-            <VictoryChart domainPadding={20}>
-                <VictoryAxis />
-                <VictoryAxis dependentAxis />
-                <VictoryLine data={this.state.data.data1} x="x" y="y" />
-            </VictoryChart>
+            <div>
+                <ChartOptionsDropdown
+                    availableCharts={availableCharts}
+                />
+                <VictoryChart domainPadding={20}>
+                    <VictoryAxis />
+                    <VictoryAxis dependentAxis />
+                    <VictoryLine data={this.state.data.data1} x="x" y="y" />
+                </VictoryChart>
+            </div>
         );
     }
 }
